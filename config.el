@@ -1,3 +1,6 @@
+;; NODE_PATH for prettier
+(setenv "NODE_PATH" "/usr/lib/node_modules")
+
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
@@ -32,7 +35,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type `relative)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
@@ -55,6 +58,9 @@
 
 ;; Selectric mode : selectric typewrites sounds on keypress
 (require 'selectric-mode)
+
+;; Web Mode
+(require 'web-mode)
 
 ;; Fira code ligatures
 (defun fira-code-mode--make-alist (list)
@@ -140,3 +146,18 @@
 ;; (require 'rust-mode)
 ;; (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 ;; (setq company-tooltip-align-annotations t)
+(defadvice! no-errors/+org-inline-image-data-fn (_protocol link _description)
+  :override #'+org-inline-image-data-fn
+  "Interpret LINK as base64-encoded image data. Ignore all errors."
+  (ignore-errors
+    (base64-decode-string link)))
+
+;; Code Folding Vim Style
+(require 'vimish-fold)
+(vimish-fold-global-mode 1)
+;; this registers a region for future folding/unfolding
+(global-set-key (kbd "C-c v") #'vimish-fold)
+;; this unregisters the region under point from folding/unfolding
+(global-set-key (kbd "C-c d") #'vimish-fold-delete)
+;; this is the actual fold/unfold command
+(global-set-key (kbd "C-c t") #'vimish-fold-toggle)

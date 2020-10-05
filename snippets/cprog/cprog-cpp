@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: cporg-cpp
+# key: cpcpp
+# --
+
+#include <bits/std++.h>
+using namespace std;
+
+int main(){
+
+return 0;
+}
